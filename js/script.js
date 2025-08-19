@@ -1,221 +1,72 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const products = [
-        {
-            id: 1,
-            name: "Orange Wide Leg",
-            price: "980,00€",
-            image: "public/0ed2750ebcfd81fdfe1b5bba6550f2f62aeb8236.png",
-            colors: ["White", "Black"],
-            description: "This one-piece swimsuit is crafted from jersey featuring an allover micro Monogram motif in relief.",
-        },
-        {
-            id: 2,
-            name: "Tailored Jacket",
-            price: "1840,00€",
-            image: "public/d3f535ca1389eb820e66aabae6aac48a9c0666e7.png",
-            colors: ["Blue", "Black"],
-            description: "This one-piece swimsuit is crafted from jersey featuring an allover micro Monogram motif in relief.",
-        },
-        {
-            id: 3,
-            name: "Accordion Pleated Dress",
-            price: "980,00€",
-            image: "public/92d307966800f906112421cf2a2d71d630964d69.png",
-            colors: ["Red", "Grey"],
-            description: "This one-piece swimsuit is crafted from jersey featuring an allover micro Monogram motif in relief.",
-        },
-        {
-            id: 4,
-            name: "Green Tassel Scarf",
-            price: "980,00€",
-            image: "public/fed16528f23003f0d54e6abdb1787e6b16662980.png",
-            colors: ["White", "Black"],
-            description: "This one-piece swimsuit is crafted from jersey featuring an allover micro Monogram motif in relief.",
-        },
-        {
-            id: 5,
-            name: "Denim Blue Tshirt",
-            price: "980,00€",
-            image: "public/2011e9b4a7b03c2b79c4aebd2f40ab7926720377.png",
-            colors: ["Grey", "Black"],
-            description: "This one-piece swimsuit is crafted from jersey featuring an allover micro Monogram motif in relief.",
-        },
-        {
-            id: 6,
-            name: "Long Sleeve Tennis Shirt",
-            price: "980,00€",
-            image: "public/f5f95e8ed2c25b6bc010fdcfc3a88a834462323a.png",
-            colors: ["Blue", "Black"],
-            description: "This one-piece swimsuit is crafted from jersey featuring an allover micro Monogram motif in relief.",
-        },
-    ];
+/**
+ * Legacy Script Bridge File
+ * This file maintains compatibility with the old script.js while the new component system is active.
+ * The new component-based system handles all functionality automatically.
+ */
 
-    const productGrid = document.getElementById('product-grid');
-    const modal = document.getElementById('product-modal');
-    const closeModalBtn = document.getElementById('close-modal');
+// Log that the new system is active
+console.log('TISSO VISON: Component-based system is active');
+
+// If the app hasn't loaded yet, wait for it
+if (!window.TissoVisonApp) {
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('TISSO VISON: Components initialized successfully');
+    });
+} else {
+    console.log('TISSO VISON: App already initialized');
+}
+
+// Expose some legacy functions for backward compatibility if needed
+window.TissoVisonLegacy = {
+    // Legacy product data access
+    getProducts: function() {
+        if (window.TissoVisonApp && window.TissoVisonApp.components.productGrid) {
+            return window.TissoVisonApp.components.productGrid.getProducts();
+        }
+        return [];
+    },
     
-    // Detect if device is mobile
-    const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+    // Legacy cart access
+    getCart: function() {
+        if (window.TissoVisonApp && window.TissoVisonApp.utils.cartManager) {
+            return window.TissoVisonApp.utils.cartManager.getCart();
+        }
+        return [];
+    },
+    
+    // Legacy customizer access
+    getConfig: function() {
+        if (window.TissoVisonApp && window.TissoVisonApp.utils.customizer) {
+            return window.TissoVisonApp.utils.customizer.getConfig();
+        }
+        return {};
+    }
+};
 
-    // Populate product grid
-    products.forEach((product, index) => {
-        const productCard = document.createElement('div');
-        productCard.className = 'product-card';
-        
-        // Generate random position for the plus icon with better mobile distribution
-        const randomTop = Math.floor(Math.random() * 60) + 20; // 20-80%
-        const randomLeft = Math.floor(Math.random() * 60) + 20; // 20-80%
-        
-        productCard.innerHTML = `
-            <img src="${product.image}" alt="${product.name}" loading="lazy">
-            <div class="add-icon" style="top: ${randomTop}%; left: ${randomLeft}%;">+</div>
-        `;
-        
-        // Add touch-friendly event listeners
-        if (isMobile) {
-            productCard.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                openModal(product);
+// Add some helpful developer functions
+window.TissoVisonDev = {
+    // Show current component state
+    showState: function() {
+        if (window.TissoVisonApp) {
+            console.log('App State:', {
+                components: Object.keys(window.TissoVisonApp.components),
+                utils: Object.keys(window.TissoVisonApp.utils),
+                initialized: window.TissoVisonApp.isInitialized()
             });
-        } else {
-            productCard.addEventListener('click', () => openModal(product));
         }
-        
-        productGrid.appendChild(productCard);
-    });
-
-    // Modal functionality with mobile improvements
-    const openModal = (product) => {
-        document.getElementById('modal-img').src = product.image;
-        document.getElementById('modal-name').textContent = product.name;
-        document.getElementById('modal-price').textContent = product.price;
-        document.getElementById('modal-description').textContent = product.description;
-
-        const colorsContainer = document.getElementById('modal-colors');
-        colorsContainer.innerHTML = '';
-        product.colors.forEach((color, index) => {
-            const colorBtn = document.createElement('button');
-            colorBtn.className = 'color-btn';
-            colorBtn.textContent = color;
-            if (index === 0) {
-                colorBtn.classList.add('selected');
-            }
-            colorBtn.addEventListener('click', () => {
-                // Remove selected from siblings
-                Array.from(colorsContainer.children).forEach(child => child.classList.remove('selected'));
-                colorBtn.classList.add('selected');
-            });
-            colorsContainer.appendChild(colorBtn);
-        });
-
-        modal.style.display = 'flex';
-        document.body.classList.add('modal-open');
-
-        // Initialize size dropdown
-        initializeSizeDropdown();
-        
-        // Focus management for accessibility
-        if (!isMobile) {
-            closeModalBtn.focus();
-        }
-    };
-
-    const initializeSizeDropdown = () => {
-        const dropdownBtn = document.getElementById('size-dropdown-btn');
-        const sizeOptions = document.getElementById('size-options');
-        const sizeOptionElements = document.querySelectorAll('.size-option');
-
-        // Remove any existing event listeners
-        const newDropdownBtn = dropdownBtn.cloneNode(true);
-        dropdownBtn.parentNode.replaceChild(newDropdownBtn, dropdownBtn);
-
-        // Toggle dropdown
-        newDropdownBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            sizeOptions.classList.toggle('show');
-            newDropdownBtn.classList.toggle('open');
-        });
-
-        // Handle size selection
-        sizeOptionElements.forEach(option => {
-            option.addEventListener('click', (e) => {
-                e.stopPropagation();
-                
-                // Remove selected from all options
-                sizeOptionElements.forEach(opt => opt.classList.remove('selected'));
-                
-                // Add selected to clicked option
-                option.classList.add('selected');
-                
-                // Update button text
-                newDropdownBtn.innerHTML = option.textContent;
-                newDropdownBtn.classList.remove('open');
-                
-                // Hide dropdown
-                sizeOptions.classList.remove('show');
-            });
-        });
-
-        // Close dropdown when clicking outside
-        const closeDropdown = (e) => {
-            if (!newDropdownBtn.contains(e.target) && !sizeOptions.contains(e.target)) {
-                sizeOptions.classList.remove('show');
-                newDropdownBtn.classList.remove('open');
-            }
-        };
-        
-        document.addEventListener('click', closeDropdown);
-        document.addEventListener('touchstart', closeDropdown);
-
-        // Set default selection to "S" as shown in the image
-        const defaultOption = document.querySelector('.size-option[data-size="S"]');
-        if (defaultOption) {
-            defaultOption.classList.add('selected');
-            newDropdownBtn.innerHTML = 'S';
-        }
-    };
-
-    const closeModal = () => {
-        modal.style.display = 'none';
-        document.body.classList.remove('modal-open');
-        
-        // Reset dropdown state
-        const dropdownBtn = document.getElementById('size-dropdown-btn');
-        const sizeOptions = document.getElementById('size-options');
-        if (dropdownBtn && sizeOptions) {
-            dropdownBtn.innerHTML = 'Choose your size';
-            dropdownBtn.classList.remove('open');
-            sizeOptions.classList.remove('show');
-            // Clear all selections
-            document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
-        }
-    };
-
-    // Enhanced modal event listeners
-    closeModalBtn.addEventListener('click', closeModal);
+    },
     
-    // Close modal on overlay click (but not on modal content click)
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
+    // Toggle customizer
+    openCustomizer: function() {
+        if (window.TissoVisonApp && window.TissoVisonApp.utils.customizer) {
+            window.TissoVisonApp.utils.customizer.openCustomizer();
         }
-    });
+    },
     
-    // Close modal on escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.style.display === 'flex') {
-            closeModal();
+    // Show cart summary
+    showCart: function() {
+        if (window.TissoVisonApp && window.TissoVisonApp.utils.cartManager) {
+            console.log('Cart:', window.TissoVisonApp.utils.cartManager.exportCart());
         }
-    });
-    
-    // Handle window resize for better responsive behavior
-    window.addEventListener('resize', () => {
-        // Close dropdowns on resize to prevent layout issues
-        const sizeOptions = document.getElementById('size-options');
-        const dropdownBtn = document.getElementById('size-dropdown-btn');
-        if (sizeOptions && dropdownBtn) {
-            sizeOptions.classList.remove('show');
-            dropdownBtn.classList.remove('open');
-        }
-    });
-});
+    }
+};

@@ -11,6 +11,11 @@
     <div class="top-banner">
         <div class="container">
             <div class="banner-content">
+                <div class="mobile-menu-btn" id="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
                 <div class="brand-name-header">TISSO VISON</div>
                 <div class="banner-center">
                     <span>Find the ideal gift for your loved ones.</span>
@@ -19,6 +24,20 @@
             </div>
         </div>
     </div>
+
+    <!-- Mobile Sidebar -->
+    <div class="mobile-sidebar" id="mobile-sidebar">
+        <div class="mobile-sidebar-header">
+            <h3>TISSO VISON</h3>
+            <button class="close-sidebar" id="close-sidebar">✕</button>
+        </div>
+        <div class="mobile-sidebar-content">
+            <!-- Empty content area to match the design -->
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="mobile-sidebar-overlay" id="mobile-sidebar-overlay"></div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -273,6 +292,11 @@
         </div>
     </div>
 
-    <script src="js/script.js"></script>
+    <script src="js/components/BannerComponent.js"></script>
+    <script src="js/components/ProductGridComponent.js"></script>
+    <script src="js/components/ProductModalComponent.js"></script>
+    <script src="js/utils/CartManager.js"></script>
+    <script src="js/utils/Customizer.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
