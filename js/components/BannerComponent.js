@@ -30,21 +30,23 @@ class BannerComponent {
         const topBanner = document.querySelector('.top-banner');
         if (topBanner) {
             const bannerContent = topBanner.querySelector('.banner-content');
+            
             // Update brand name
             const brandNameElement = bannerContent.querySelector('.brand-name-header');
             if (brandNameElement) {
                 brandNameElement.textContent = this.config.brandName;
             }
-            // Only update center text and button for desktop
-            if (window.innerWidth > 768) {
-                const centerTextElement = bannerContent.querySelector('.banner-center span');
-                if (centerTextElement) {
-                    centerTextElement.textContent = this.config.topBannerText;
-                }
-                const buttonElement = bannerContent.querySelector('.btn-primary');
-                if (buttonElement) {
-                    buttonElement.innerHTML = `${this.config.buttonText} →`;
-                }
+            
+            // Update center text
+            const centerTextElement = bannerContent.querySelector('.banner-center span');
+            if (centerTextElement) {
+                centerTextElement.textContent = this.config.topBannerText;
+            }
+            
+            // Update button text
+            const buttonElement = bannerContent.querySelector('.btn-primary');
+            if (buttonElement) {
+                buttonElement.innerHTML = `${this.config.buttonText} →`;
             }
         }
     }
@@ -78,17 +80,10 @@ class BannerComponent {
     }
 
     attachEventListeners() {
-        // Top banner button (desktop)
+        // Top banner button
         const topBannerButton = document.querySelector('.top-banner .btn-primary');
         if (topBannerButton) {
             topBannerButton.addEventListener('click', (e) => {
-                this.handleTopBannerClick(e);
-            });
-        }
-        // Sidebar button (mobile)
-        const sidebarGiftBtn = document.querySelector('.sidebar-gift-btn');
-        if (sidebarGiftBtn) {
-            sidebarGiftBtn.addEventListener('click', (e) => {
                 this.handleTopBannerClick(e);
             });
         }
@@ -108,60 +103,69 @@ class BannerComponent {
     initMobileMenu() {
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileSidebar = document.getElementById('mobile-sidebar');
-        const closeSidebarBtn = document.getElementById('close-sidebar');
-        const sidebarOverlay = document.getElementById('mobile-sidebar-overlay');
 
         // Also update sidebar text/button on open
         const updateSidebarContent = () => {
-            const sidebarText = document.querySelector('.sidebar-banner-center span');
-            if (sidebarText) sidebarText.textContent = this.config.topBannerText;
-            const sidebarBtn = document.querySelector('.sidebar-gift-btn');
+            const sidebarText = document.querySelector('.mobile-sidebar-content p');
+            if (sidebarText) sidebarText.textContent = 'Find the ideal gift for your loved ones.';
+            const sidebarBtn = document.querySelector('.sidebar-button');
             if (sidebarBtn) sidebarBtn.innerHTML = `${this.config.buttonText} →`;
         };
+        // Also add a global function for testing
+        window.toggleMobileSidebar = () => {
+            const mobileSidebar = document.getElementById('mobile-sidebar');
+            if (mobileSidebar) {
+                if (mobileSidebar.classList.contains('open')) {
+                    this.closeSidebar();
+                } else {
+                    this.openSidebar();
+                }
+            }
+        };
+
         if (mobileMenuBtn && mobileSidebar) {
-            mobileMenuBtn.addEventListener('click', () => {
-                updateSidebarContent();
-                this.openSidebar();
+            mobileMenuBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (mobileSidebar.classList.contains('open')) {
+                    this.closeSidebar();
+                } else {
+                    updateSidebarContent();
+                    this.openSidebar();
+                }
             });
-        }
-
-        if (closeSidebarBtn) {
-            closeSidebarBtn.addEventListener('click', () => {
-                this.closeSidebar();
-            });
-        }
-
-        if (sidebarOverlay) {
-            sidebarOverlay.addEventListener('click', () => {
-                this.closeSidebar();
-            });
+        } else {
+            console.error('Mobile menu elements not found:', { mobileMenuBtn, mobileSidebar });
         }
     }
 
     openSidebar() {
         const mobileSidebar = document.getElementById('mobile-sidebar');
-        const sidebarOverlay = document.getElementById('mobile-sidebar-overlay');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         
         if (mobileSidebar) {
             mobileSidebar.classList.add('open');
         }
-        if (sidebarOverlay) {
-            sidebarOverlay.classList.add('active');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.classList.add('open');
         }
-        document.body.style.overflow = 'hidden';
+        
+        // Add class to body to hide illustrations
+        document.body.classList.add('sidebar-open');
     }
 
     closeSidebar() {
         const mobileSidebar = document.getElementById('mobile-sidebar');
-        const sidebarOverlay = document.getElementById('mobile-sidebar-overlay');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         
         if (mobileSidebar) {
             mobileSidebar.classList.remove('open');
         }
-        if (sidebarOverlay) {
-            sidebarOverlay.classList.remove('active');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.classList.remove('open');
         }
-        document.body.style.overflow = '';
+        
+        // Remove class from body to show illustrations again
+        document.body.classList.remove('sidebar-open');
     }
 
     initAnimations() {

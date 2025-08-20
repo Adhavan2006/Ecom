@@ -118,8 +118,8 @@ class Customizer {
         
         Object.assign(toggleBtn.style, {
             position: 'fixed',
-            bottom: '20px',
-            right: '20px',
+            top: '20px',
+            left: '20px',
             width: '50px',
             height: '50px',
             borderRadius: '50%',

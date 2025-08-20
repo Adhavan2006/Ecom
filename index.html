@@ -12,33 +12,27 @@
         <div class="container">
             <div class="banner-content">
                 <div class="banner-header-mobile">
-                    <div class="mobile-menu-btn" id="mobile-menu-btn">
+                    <div class="mobile-menu-btn" id="mobile-menu-btn" onclick="window.toggleMobileSidebar()">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
                     <div class="brand-name-header">TISSO VISON</div>
                 </div>
+                <div class="banner-center">
+                    <span>Find the ideal gift for your loved ones.</span>
+                </div>
+                <button class="btn btn-primary">CHOOSE GIFT →</button>
+            </div>
+        </div>
+        <!-- Mobile Sidebar - moved here to be part of banner flow -->
+        <div class="mobile-sidebar" id="mobile-sidebar">
+            <div class="mobile-sidebar-content">
+                <p>Find the ideal gift for your loved ones.</p>
+                <button class="sidebar-button">CHOOSE GIFT →</button>
             </div>
         </div>
     </div>
-
-    <!-- Mobile Sidebar -->
-    <div class="mobile-sidebar" id="mobile-sidebar">
-        <div class="mobile-sidebar-header">
-            <h3>TISSO VISON</h3>
-            <button class="close-sidebar" id="close-sidebar">✕</button>
-        </div>
-        <div class="mobile-sidebar-content">
-            <div class="sidebar-banner-center">
-                <span>Find the ideal gift for your loved ones.</span>
-            </div>
-            <button class="btn btn-primary sidebar-gift-btn">CHOOSE GIFT →</button>
-        </div>
-    </div>
-
-    <!-- Mobile Sidebar Overlay -->
-    <div class="mobile-sidebar-overlay" id="mobile-sidebar-overlay"></div>
 
     <!-- Hero Section -->
     <section class="hero">
