@@ -203,8 +203,8 @@ body, input, button, textarea {
 
 .customizer-toggle {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    bottom: 20px;
+    right: 20px;
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -224,7 +224,7 @@ body, input, button, textarea {
 }
 
 .customizer-open .customizer-toggle {
-    left: 370px;
+    right: 420px;
 }
 
 /* Cart Notification Styles */
@@ -354,8 +354,18 @@ body, input, button, textarea {
         transform: translateX(100%);
     }
     
+    .customizer-toggle {
+        top: auto !important;
+        bottom: 20px !important;
+        left: auto !important;
+        right: 20px !important;
+    }
+    
     .customizer-open .customizer-toggle {
-        left: 20px;
+        right: 20px !important;
+        left: auto !important;
+        top: auto !important;
+        bottom: 20px !important;
         transform: scale(0.8);
     }
     
@@ -453,6 +463,9 @@ body, input, button, textarea {
     width: 24px;
     height: 18px;
     justify-content: space-between;
+    background: none;
+    border: none;
+    padding: 0;
 }
 
 .mobile-menu-btn span {
@@ -460,6 +473,71 @@ body, input, button, textarea {
     height: 2px;
     background-color: #333;
     transition: all 0.3s ease;
+    display: block;
+}
+
+.banner-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.banner-header-mobile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+@media (max-width: 768px) {
+    .banner-header-mobile {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    .brand-name-header {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+    .mobile-menu-btn {
+        margin-right: 12px;
+        display: flex !important;
+    }
+    .banner-center,
+    .top-banner .btn-primary {
+        display: none !important;
+    }
+    .sidebar-banner-center,
+    .sidebar-gift-btn {
+        display: block !important;
+    }
+}
+
+@media (min-width: 769px) {
+    .sidebar-banner-center,
+    .sidebar-gift-btn {
+        display: none !important;
+    }
+}
+
+.sidebar-banner-center {
+    text-align: center;
+    margin: 32px 0 16px 0;
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+    display: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 20px;
+}
+
+.sidebar-gift-btn {
+    width: 80%;
+    margin: 0 auto 24px auto;
+    display: none;
 }
 
 @media (max-width: 768px) {
@@ -492,8 +570,21 @@ body, input, button, textarea {
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.mobile-sidebar.open {
-    transform: translateX(280px);
+@media (max-width: 768px) {
+    .mobile-sidebar {
+        left: -100vw;
+        width: 100vw;
+    }
+    
+    .mobile-sidebar.open {
+        transform: translateX(100vw);
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-sidebar.open {
+        transform: translateX(280px);
+    }
 }
 
 .mobile-sidebar-header {
@@ -1223,5 +1314,23 @@ body.modal-open {
     .illustration-layer {
         image-rendering: -webkit-optimize-contrast;
         image-rendering: crisp-edges;
+    }
+}
+
+/* Mobile Customizer Button Override - Must be at end */
+@media (max-width: 768px) {
+    .customizer-toggle {
+        top: auto !important;
+        bottom: 20px !important;
+        left: auto !important;
+        right: 20px !important;
+    }
+    
+    .customizer-open .customizer-toggle {
+        right: 20px !important;
+        left: auto !important;
+        top: auto !important;
+        bottom: 20px !important;
+        transform: scale(0.8) !important;
     }
 }

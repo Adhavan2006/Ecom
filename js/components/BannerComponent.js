@@ -30,23 +30,21 @@ class BannerComponent {
         const topBanner = document.querySelector('.top-banner');
         if (topBanner) {
             const bannerContent = topBanner.querySelector('.banner-content');
-            
             // Update brand name
             const brandNameElement = bannerContent.querySelector('.brand-name-header');
             if (brandNameElement) {
                 brandNameElement.textContent = this.config.brandName;
             }
-            
-            // Update center text
-            const centerTextElement = bannerContent.querySelector('.banner-center span');
-            if (centerTextElement) {
-                centerTextElement.textContent = this.config.topBannerText;
-            }
-            
-            // Update button text
-            const buttonElement = bannerContent.querySelector('.btn-primary');
-            if (buttonElement) {
-                buttonElement.innerHTML = `${this.config.buttonText} →`;
+            // Only update center text and button for desktop
+            if (window.innerWidth > 768) {
+                const centerTextElement = bannerContent.querySelector('.banner-center span');
+                if (centerTextElement) {
+                    centerTextElement.textContent = this.config.topBannerText;
+                }
+                const buttonElement = bannerContent.querySelector('.btn-primary');
+                if (buttonElement) {
+                    buttonElement.innerHTML = `${this.config.buttonText} →`;
+                }
             }
         }
     }
@@ -80,10 +78,17 @@ class BannerComponent {
     }
 
     attachEventListeners() {
-        // Top banner button
+        // Top banner button (desktop)
         const topBannerButton = document.querySelector('.top-banner .btn-primary');
         if (topBannerButton) {
             topBannerButton.addEventListener('click', (e) => {
+                this.handleTopBannerClick(e);
+            });
+        }
+        // Sidebar button (mobile)
+        const sidebarGiftBtn = document.querySelector('.sidebar-gift-btn');
+        if (sidebarGiftBtn) {
+            sidebarGiftBtn.addEventListener('click', (e) => {
                 this.handleTopBannerClick(e);
             });
         }
@@ -106,8 +111,16 @@ class BannerComponent {
         const closeSidebarBtn = document.getElementById('close-sidebar');
         const sidebarOverlay = document.getElementById('mobile-sidebar-overlay');
 
+        // Also update sidebar text/button on open
+        const updateSidebarContent = () => {
+            const sidebarText = document.querySelector('.sidebar-banner-center span');
+            if (sidebarText) sidebarText.textContent = this.config.topBannerText;
+            const sidebarBtn = document.querySelector('.sidebar-gift-btn');
+            if (sidebarBtn) sidebarBtn.innerHTML = `${this.config.buttonText} →`;
+        };
         if (mobileMenuBtn && mobileSidebar) {
             mobileMenuBtn.addEventListener('click', () => {
+                updateSidebarContent();
                 this.openSidebar();
             });
         }
